@@ -37,3 +37,6 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+# Налаштування середовища (у репозиторій потрапляє лише .env.example)
+.env

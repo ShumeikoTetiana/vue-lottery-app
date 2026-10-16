@@ -1,67 +1,60 @@
 # vue-lottery-app
 
-Лабораторна робота №4: застосунок-лотерея на Vue 3 (Composition API, TypeScript, Bootstrap через scss, ESLint).
+Лабораторна робота №5: маршрутизація (Vue Router), патерн Repository для DummyJSON, авторизація через JWT.
+Стек: Vue 3 (Composition API, TypeScript), Vue Router, Pinia, VeeValidate + Zod, Bootstrap 5 (SCSS), ESLint.
 
 ## Запуск
 
 ```sh
-npm install      # встановити залежності (один раз)
-npm run dev      # запустити, відкрити http://localhost:5173
-npm run lint     # перевірка ESLint
-npm run build    # перевірка типів і збірка
+cp .env.example .env   # один раз: адреса API (на Windows: copy .env.example .env)
+npm install
+npm run dev            # http://localhost:5173
+npm run lint
+npm run build
+npm run deploy         # збірка і публікація на GitHub Pages (гілка gh-pages)
 ```
+
+Тестовий акаунт DummyJSON: `emilys` / `emilyspass`.
 
 ## Структура
 
 ```
 src/
-  main.ts                      точка входу: підключає стилі та монтує App
-  App.vue                      увесь стан застосунку і логіка
-  assets/styles/main.scss      Bootstrap частинами + кольори з дизайну
-  types/participant.ts         типи TypeScript
-  utils/validation.ts          перевірка полів форми (regexp, дата, унікальність e-mail)
-  utils/storage.ts             читання і запис у localStorage
-  components/
-    BaseButton.vue             кнопка
-    BaseInput.vue              поле вводу з підписом і помилкою
-    WinnerItem.vue             один переможець (плашка з хрестиком)
-    WinnersList.vue            блок переможців і кнопка New winner
-    ParticipantForm.vue        форма з чотирма полями та валідацією
-    RegistrationForm.vue       блок реєстрації (картка + ParticipantForm)
-    ParticipantsTable.vue      блок таблиці, сортування, кнопки редагування/видалення
-    SearchBar.vue              поле пошуку з debounce 300 мс
-    BaseModal.vue              модальне вікно зі слотами
+  main.ts                       запуск: Pinia, роутер, налаштування HTTP-клієнта
+  App.vue                       вибір layout за meta.layout + <RouterView />
+  router/index.ts               маршрути, guard-и, заголовок вкладки
+  router/route-meta.d.ts        типи для поля meta
+  api/http-client.ts            fetch, VITE_API_URL, заголовок Authorization, оновлення токена при 401
+  services/interfaces.ts        Readable, Searchable, Creatable, Editable, Deletable
+  services/user.service.ts      UserService (репозиторій користувачів)
+  services/auth.service.ts      AuthService (login, me, refresh)
+  services/service-provider.ts  фабрика ServiceProvider
+  stores/auth.ts                токени і користувач (Pinia + localStorage)
+  stores/users.ts               список, пагінація, локальні зміни, переможці
+  types/user.ts, types/auth.ts  моделі за схемою DummyJSON, CreateUserDto, UpdateUserDto
+  validation/schemas.ts         схеми Zod для форм
+  utils/users-query.ts          читання і запис page, q, sortBy, order в адресі
+  config/project.ts             ПІБ, GitHub, навички (замінити на свої)
+  layouts/                      DefaultLayout, AuthLayout
+  views/                        Home, About, Users, UserCreate, UserDetails, UserEdit, Login, NotFound
+  components/                   AppHeader, AppNavigation, AppLogo, форми, таблиця, пагінація, модальні вікна
 ```
 
-## Як рухаються дані
+## Маршрути
 
-Увесь стан живе в `App.vue`. Дочірні компоненти отримують дані через props
-і повідомляють про дії через події (emit); самі вони список не змінюють.
+| Адреса | Сторінка | Доступ |
+| --- | --- | --- |
+| `/` | Home | усім |
+| `/about` | About author | усім |
+| `/login` | Login (AuthLayout) | лише неавторизованим |
+| `/users?page=&q=&sortBy=&order=` | список учасників | лише авторизованим |
+| `/users/new` | створення учасника | лише авторизованим |
+| `/users/:id` | інформація про учасника (`props: true`) | лише авторизованим |
+| `/users/:id/edit` | вкладений маршрут редагування | лише авторизованим |
+| усе інше | 404 | усім |
 
-- `participants` - список учасників (`ref`). Відновлюється з localStorage при старті,
-  зберігається через `watch(..., { deep: true })`.
-- `winnerIds` - id переможців. `winners` і `candidates` обчислюються (`computed`).
-- `nameFilter`, `sortKey`, `sortDirection` - стан пошуку та сортування.
-  `visibleParticipants` спочатку фільтрує, потім сортує копію списку.
-- `editedParticipant`, `participantToDelete` - кого зараз редагуємо або видаляємо.
-  Поки там не `null`, показується відповідне модальне вікно.
+## Чому список зберігає зміни локально
 
-## Де яка вимога завдання
-
-| Вимога | Де в коді |
-| --- | --- |
-| Обов'язкові поля, regexp e-mail і телефону, дата не в майбутньому | `utils/validation.ts` |
-| Показ помилок без alert | `BaseInput.vue` (`invalid-feedback`) |
-| Очищення форми без спрацювання валідації | `ParticipantForm.vue`, `resetForm` скидає `dirty` і `touched` |
-| Унікальність e-mail без урахування регістру | `validation.ts` (`normalizeEmail`), `App.vue` (`allEmails`, `emailsExceptEdited`) |
-| Enter відправляє форму | `ParticipantForm.vue`, `@keydown.enter` |
-| Не більше 3 переможців, кнопка неактивна | `App.vue`, `canPickWinner` |
-| Переможець не обирається двічі | `App.vue`, `candidates` |
-| Видалення переможця | `WinnerItem.vue` -> `WinnersList.vue` -> `App.vue` `removeWinner` |
-| localStorage через watch з deep | `App.vue` + `utils/storage.ts` |
-| Редагування в модальному вікні | `App.vue`, `BaseModal` + `ParticipantForm` |
-| Підтвердження видалення | `App.vue`, другий `BaseModal`, `confirmDelete` |
-| Сортування з іконками | `ParticipantsTable.vue` (кнопки в заголовках), `App.vue` `changeSort` |
-| Пошук, подія filter-by-name, debounce 300 мс | `SearchBar.vue` |
-| Esc закриває модальне вікно | `BaseModal.vue`, `@keydown.esc` |
-| Bootstrap частинами через scss | `assets/styles/main.scss` |
+DummyJSON лише імітує POST, PUT і DELETE: відповідь успішна, але дані на сервері не змінюються.
+Тому `stores/users.ts` зберігає створених, змінених і видалених користувачів
+і накладає ці зміни на кожну відповідь сервера. Зміни живуть до перезавантаження сторінки.

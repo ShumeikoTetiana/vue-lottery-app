@@ -5,19 +5,19 @@ const props = withDefaults(
   defineProps<{
     id: string
     label: string
-    type?: 'text' | 'email' | 'tel' | 'date'
+    type?: 'text' | 'email' | 'tel' | 'date' | 'password' | 'number'
     placeholder?: string
     error?: string
     // touched: користувач уже працював з полем, тому можна показувати результат перевірки
     touched?: boolean
-    max?: string
+    autocomplete?: string
   }>(),
   {
     type: 'text',
     placeholder: '',
     error: '',
     touched: false,
-    max: undefined,
+    autocomplete: undefined,
   },
 )
 
@@ -25,7 +25,7 @@ const emit = defineEmits<{
   blur: []
 }>()
 
-// v-model компонента: батько пише <BaseInput v-model="form.name" />
+// v-model компонента: батько пише <BaseInput v-model="value" />
 const model = defineModel<string>({ required: true })
 
 const isInvalid = computed(() => props.touched && props.error !== '')
@@ -42,7 +42,7 @@ const isValid = computed(() => props.touched && props.error === '')
       :class="{ 'is-invalid': isInvalid, 'is-valid': isValid }"
       :type="type"
       :placeholder="placeholder"
-      :max="max"
+      :autocomplete="autocomplete"
       :aria-invalid="isInvalid"
       :aria-describedby="isInvalid ? `${id}-error` : undefined"
       @blur="emit('blur')"

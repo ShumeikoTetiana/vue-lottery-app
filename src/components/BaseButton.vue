@@ -1,5 +1,5 @@
 <script setup lang="ts">
-type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'link'
+type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'link' | 'outline-secondary'
 
 withDefaults(
   defineProps<{
@@ -7,12 +7,15 @@ withDefaults(
     variant?: ButtonVariant
     disabled?: boolean
     small?: boolean
+    // Показує спінер і блокує кнопку, поки триває запит
+    loading?: boolean
   }>(),
   {
     type: 'button',
     variant: 'primary',
     disabled: false,
     small: false,
+    loading: false,
   },
 )
 
@@ -26,9 +29,10 @@ const emit = defineEmits<{
     class="btn"
     :class="[`btn-${variant}`, { 'btn-sm': small }]"
     :type="type"
-    :disabled="disabled"
+    :disabled="disabled || loading"
     @click="emit('click', $event)"
   >
+    <span v-if="loading" class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
     <slot />
   </button>
 </template>

@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import type { Participant } from '@/types/participant'
+import type { User } from '@/types/user'
 
 defineProps<{
-  winner: Participant
+  winner: User
 }>()
 
 const emit = defineEmits<{
-  remove: [id: string]
+  remove: [id: number]
 }>()
 </script>
 
 <template>
   <span class="winner-item badge text-bg-primary">
-    {{ winner.name }}
+    {{ winner.firstName }} {{ winner.lastName }}
     <button
       class="winner-item__remove"
       type="button"
-      :aria-label="`Remove winner ${winner.name}`"
+      :aria-label="`Remove winner ${winner.firstName} ${winner.lastName}`"
       @click="emit('remove', winner.id)"
     >
       x

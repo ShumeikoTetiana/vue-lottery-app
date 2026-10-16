@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import BaseButton from '@/components/BaseButton.vue'
 import WinnerItem from '@/components/WinnerItem.vue'
-import type { Participant } from '@/types/participant'
+import type { User } from '@/types/user'
 
 defineProps<{
-  winners: Participant[]
+  winners: User[]
   canPickWinner: boolean
 }>()
 
 const emit = defineEmits<{
   'pick-winner': []
-  'remove-winner': [id: string]
+  'remove-winner': [id: number]
 }>()
 </script>
 
