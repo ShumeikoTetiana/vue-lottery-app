@@ -1,0 +1,65 @@
+// 1. Функції Bootstrap (потрібні до змінних)
+@import 'bootstrap/scss/functions';
+
+// 2. Власні значення змінних: кольори та розміри з дизайну
+$primary: #3bafda;
+$success: #1abc9c;
+$danger: #f05050;
+$body-bg: #f4f4f4;
+$body-color: #333;
+$font-family-sans-serif: 'Open Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+$border-radius: 0.2rem;
+$card-bg: #fff;
+$card-border-color: #e6e6e6;
+$modal-content-bg: #fff;
+$input-bg: #fafafa;
+$input-border-color: #eee;
+$input-focus-border-color: #ccc;
+$input-focus-box-shadow: none;
+$input-placeholder-color: #999;
+$table-bg: transparent;
+$table-color: #777;
+$table-border-color: #eee;
+
+// 3. Решта обов'язкових частин Bootstrap
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/utilities';
+@import 'bootstrap/scss/root';
+@import 'bootstrap/scss/reboot';
+
+// 4. Лише ті компоненти, які реально використовуються в застосунку
+@import 'bootstrap/scss/type';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/forms';
+@import 'bootstrap/scss/buttons';
+@import 'bootstrap/scss/tables';
+@import 'bootstrap/scss/card';
+@import 'bootstrap/scss/badge';
+@import 'bootstrap/scss/close';
+@import 'bootstrap/scss/modal';
+@import 'bootstrap/scss/transitions';
+@import 'bootstrap/scss/helpers';
+@import 'bootstrap/scss/utilities/api';
+
+// 5. Дрібні загальні правки під дизайн
+.btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-color: #fff;
+  --bs-btn-disabled-color: #fff;
+  font-weight: 600;
+}
+
+.btn-danger,
+.btn-secondary {
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-color: #fff;
+}
+
+.form-label {
+  font-weight: 600;
+}
