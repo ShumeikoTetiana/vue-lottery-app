@@ -20,13 +20,11 @@ function readStoredAuth(): StoredAuth {
       return JSON.parse(raw) as StoredAuth
     }
   } catch {
-    // Пошкоджені дані або недоступний localStorage: починаємо без входу
   }
   return { accessToken: null, refreshToken: null, user: null }
 }
 
 export const useAuthStore = defineStore('auth', () => {
-  // Відновлюємо стан із localStorage при запуску застосунку
   const stored = readStoredAuth()
 
   const accessToken = ref<string | null>(stored.accessToken)
@@ -38,7 +36,6 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isAuthenticated = computed(() => accessToken.value !== null)
 
-  // Будь-яка зміна токенів чи користувача одразу зберігається в localStorage
   watch(
     [accessToken, refreshToken, user],
     () => {
@@ -54,7 +51,6 @@ export const useAuthStore = defineStore('auth', () => {
           localStorage.removeItem(STORAGE_KEY)
         }
       } catch {
-        // localStorage недоступний: вхід працюватиме до перезавантаження сторінки
       }
     },
     { deep: true },
@@ -81,7 +77,6 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  // Перевіряє збережений токен через захищений ендпоінт /auth/me
   async function fetchCurrentUser(): Promise<void> {
     if (!accessToken.value) {
       return
@@ -89,11 +84,9 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       user.value = await ServiceProvider.auth.getCurrentUser()
     } catch {
-      // 401 уже оброблено в http-клієнті (оновлення токена або вихід)
     }
   }
 
-  // Викликається http-клієнтом, коли сервер відповів 401
   async function refreshAccessToken(): Promise<boolean> {
     if (!refreshToken.value) {
       return false

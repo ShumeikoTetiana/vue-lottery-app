@@ -1,4 +1,3 @@
-// Модель користувача за схемою DummyJSON (https://dummyjson.com/docs/users)
 
 export type Gender = 'male' | 'female'
 
@@ -44,9 +43,6 @@ export interface User {
   email: string
   phone: string
   username: string
-  // Решта полів є в кожного користувача з сервера, але їх немає
-  // у щойно створеного (POST /users/add повертає лише надіслані поля),
-  // тому вони необов'язкові
   maidenName?: string
   password?: string
   birthDate?: string
@@ -69,16 +65,13 @@ export interface User {
   role?: UserRole
 }
 
-// Поля, які заповнюються у формі створення
 export type CreateUserDto = Pick<
   User,
   'firstName' | 'lastName' | 'email' | 'username' | 'age' | 'gender' | 'phone'
 > & { password: string }
 
-// При оновленні будь-яке поле можна не передавати
 export type UpdateUserDto = Partial<CreateUserDto>
 
-// Відповідь сервера на GET /users та GET /users/search
 export interface UsersResponse {
   users: User[]
   total: number
@@ -86,5 +79,4 @@ export interface UsersResponse {
   limit: number
 }
 
-// Поля, за якими можна сортувати список
 export type UserSortKey = 'firstName' | 'age'

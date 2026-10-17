@@ -8,7 +8,6 @@ export interface AuthTokens {
   refreshToken: string
 }
 
-// Дані авторизованого користувача з POST /auth/login та GET /auth/me
 export interface AuthUser {
   id: number
   username: string

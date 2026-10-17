@@ -18,7 +18,6 @@ withDefaults(
     <div class="flex-grow-1">
       <slot />
     </div>
-    <!-- Сюди можна передати кнопку, наприклад "Спробувати ще раз" -->
     <slot name="action" />
   </div>
 </template>

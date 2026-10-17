@@ -7,7 +7,6 @@ import type { User, UserSortKey } from '@/types/user'
 
 const props = defineProps<{
   users: User[]
-  // Номер першого рядка на сторінці (для другої сторінки це 11)
   startIndex: number
   sortBy: UserSortKey | null
   order: SortOrder

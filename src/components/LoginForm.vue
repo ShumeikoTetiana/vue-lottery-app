@@ -9,7 +9,6 @@ import { loginSchema, type LoginFormValues } from '@/validation/schemas'
 withDefaults(
   defineProps<{
     isSubmitting?: boolean
-    // Помилка авторизації від сервера ("Невірне ім'я користувача або пароль")
     serverError?: string | null
   }>(),
   {

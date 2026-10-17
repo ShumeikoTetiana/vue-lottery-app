@@ -12,7 +12,6 @@ import type {
 
 type QueryParams = ListParams & { q?: string }
 
-// Перетворює об'єкт параметрів на рядок limit=10&skip=0, пропускаючи порожні
 function buildQuery(params: QueryParams): string {
   const query = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {

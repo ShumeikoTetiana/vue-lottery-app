@@ -17,8 +17,6 @@ const route = useRoute()
 const router = useRouter()
 const usersStore = useUsersStore()
 
-// Сторінка, пошук і сортування беруться з адреси, а не з локального стану.
-// Тому посилання /users?page=2&q=john можна скопіювати і відкрити той самий список
 const listQuery = computed(() => parseUsersQuery(route.query))
 
 function updateQuery(changes: Partial<UsersListQuery>, replace = false): void {
@@ -26,11 +24,9 @@ function updateQuery(changes: Partial<UsersListQuery>, replace = false): void {
   void (replace ? router.replace(location) : router.push(location))
 }
 
-// Завантаження даних при кожній зміні параметрів в адресі
 watch(
   listQuery,
   (query) => {
-    // Під час переходу на іншу сторінку адреса вже змінилась, а компонент ще не зник
     if (route.name !== 'users') {
       return
     }
@@ -42,7 +38,6 @@ watch(
 
 function handleSearch(query: string): void {
   if (query !== listQuery.value.q) {
-    // replace: кожна введена літера не повинна створювати новий запис в історії браузера
     updateQuery({ q: query, page: 1 }, true)
   }
 }
@@ -96,7 +91,6 @@ const userToDelete = ref<User | null>(null)
 
       <BaseLoader v-if="usersStore.isLoading && usersStore.users.length === 0" />
 
-      <!-- Поки йде повторне завантаження, старий список трохи тьмяніє -->
       <div v-else :class="{ 'users__list--loading': usersStore.isLoading }">
         <UsersTable
           v-if="usersStore.users.length > 0"

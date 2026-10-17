@@ -3,8 +3,7 @@ import { computed } from 'vue'
 import { useField } from 'vee-validate'
 import BaseInput from '@/components/BaseInput.vue'
 
-// Поле форми, підключене до VeeValidate.
-// Значення, помилку і стан "touched" бере з батьківської форми (useForm) за назвою поля
+
 const props = withDefaults(
   defineProps<{
     name: string
@@ -24,8 +23,6 @@ const props = withDefaults(
 
 const { value, errorMessage, meta, handleBlur } = useField<unknown>(() => props.name)
 
-// Writable computed: поле вводу завжди працює з рядком,
-// навіть якщо у формі зберігається число (вік)
 const textValue = computed({
   get: () => (value.value === undefined || value.value === null ? '' : String(value.value)),
   set: (newValue: string) => {

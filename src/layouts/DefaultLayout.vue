@@ -6,7 +6,6 @@ import AppHeader from '@/components/AppHeader.vue'
   <div class="default-layout">
     <AppHeader />
     <main class="default-layout__main container">
-      <!-- Сюди потрапляє сторінка з <RouterView /> в App.vue -->
       <slot />
     </main>
   </div>

@@ -17,7 +17,6 @@ async function createUser(values: UserFormValues): Promise<void> {
   serverError.value = null
   try {
     await usersStore.createUser(values)
-    // Новий учасник показується на початку першої сторінки списку
     await router.push({ name: 'users' })
   } catch (error) {
     serverError.value = getErrorMessage(error)

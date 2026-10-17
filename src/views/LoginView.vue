@@ -9,7 +9,6 @@ const auth = useAuthStore()
 const route = useRoute()
 const router = useRouter()
 
-// Куди повернути користувача після входу. Дозволяємо лише внутрішні адреси
 function getRedirectTarget(): RouteLocationRaw {
   const redirect = route.query.redirect
   if (typeof redirect === 'string' && redirect.startsWith('/') && !redirect.startsWith('//')) {
@@ -25,7 +24,6 @@ async function handleLogin(values: LoginFormValues): Promise<void> {
   }
 }
 
-// Прибираємо помилку від попередньої спроби
 onMounted(() => {
   auth.loginError = null
 })
@@ -42,7 +40,7 @@ onMounted(() => {
         @submit="handleLogin"
       />
       <p class="login__hint mt-3 mb-0">
-        Тестовий акаунт DummyJSON: <code>emilys</code> / <code>emilyspass</code>
+        Тестовий акаунт: <code>emilys</code> / <code>emilyspass</code>
       </p>
     </div>
   </section>

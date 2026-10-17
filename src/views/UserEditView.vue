@@ -16,7 +16,6 @@ const usersStore = useUsersStore()
 
 const userId = computed(() => Number(props.id))
 
-// Користувача вже завантажила батьківська сторінка UserDetailsView
 const user = computed(() => usersStore.findUser(userId.value))
 
 const initialValues = computed(() => {
@@ -31,7 +30,6 @@ const isSubmitting = ref(false)
 const serverError = ref<string | null>(null)
 
 async function updateUser(values: UserFormValues): Promise<void> {
-  // Порожній пароль означає "не змінювати", тому не надсилаємо його
   const { password, ...rest } = values
   const data: UpdateUserDto = password ? { ...rest, password } : rest
 
@@ -52,7 +50,6 @@ async function updateUser(values: UserFormValues): Promise<void> {
   <section v-if="initialValues" class="card">
     <div class="card-body p-4">
       <h2 class="h5 mb-4">Редагування даних</h2>
-      <!-- key: при переході на іншого користувача форма створюється заново -->
       <UserForm
         :key="id"
         mode="edit"

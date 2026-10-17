@@ -12,7 +12,6 @@ const emit = defineEmits<{
 const modalElement = useTemplateRef<HTMLDivElement>('modal')
 
 onMounted(() => {
-  // Переносимо фокус у вікно, щоб воно отримувало натискання клавіш (Esc)
   modalElement.value?.focus()
   document.body.classList.add('modal-open')
 })
@@ -23,7 +22,6 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <!-- Teleport переносить вікно в кінець body, щоб воно було поверх усієї сторінки -->
   <Teleport to="body">
     <div class="modal-backdrop show"></div>
     <div
@@ -45,7 +43,6 @@ onBeforeUnmount(() => {
           <div class="modal-body">
             <slot />
           </div>
-          <!-- Нижня панель з кнопками з'являється, лише якщо слот footer передано -->
           <div v-if="$slots.footer" class="modal-footer">
             <slot name="footer" />
           </div>

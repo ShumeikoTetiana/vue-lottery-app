@@ -2,7 +2,6 @@ import type { LocationQuery, LocationQueryRaw, LocationQueryValue } from 'vue-ro
 import type { SortOrder } from '@/services/interfaces'
 import type { UserSortKey } from '@/types/user'
 
-// Стан списку користувачів, який зберігається в URL: /users?page=2&q=john&sortBy=age&order=desc
 export interface UsersListQuery {
   page: number
   q: string
@@ -10,13 +9,11 @@ export interface UsersListQuery {
   order: SortOrder
 }
 
-// Значення query-параметра може бути рядком, масивом або відсутнім
 function firstValue(value: LocationQueryValue | LocationQueryValue[] | undefined): string {
   const single = Array.isArray(value) ? value[0] : value
   return typeof single === 'string' ? single : ''
 }
 
-// Читає параметри з URL і підставляє безпечні значення, якщо там щось неправильне
 export function parseUsersQuery(query: LocationQuery): UsersListQuery {
   const page = Number.parseInt(firstValue(query.page), 10)
   const sortBy = firstValue(query.sortBy)
@@ -29,7 +26,6 @@ export function parseUsersQuery(query: LocationQuery): UsersListQuery {
   }
 }
 
-// Зворотне перетворення: значення за замовчуванням в URL не пишемо
 export function toRouteQuery(state: UsersListQuery): LocationQueryRaw {
   return {
     page: state.page > 1 ? String(state.page) : undefined,

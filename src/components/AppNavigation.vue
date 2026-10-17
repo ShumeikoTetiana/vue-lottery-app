@@ -21,7 +21,6 @@ async function logout(): Promise<void> {
   <nav aria-label="Головне меню">
     <ul class="nav nav-pills flex-wrap gap-1">
       <li v-for="link in links" :key="link.name" class="nav-item">
-        <!-- RouterLink сам додає клас active, коли маршрут збігається -->
         <RouterLink class="nav-link" :to="{ name: link.name }">{{ link.label }}</RouterLink>
       </li>
       <li class="nav-item">

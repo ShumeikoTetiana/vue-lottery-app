@@ -12,7 +12,6 @@ const emit = defineEmits<{
   'change-page': [page: number]
 }>()
 
-// Номери сторінок навколо поточної: наприклад 3 4 [5] 6 7
 const pages = computed(() => {
   const count = Math.min(VISIBLE_PAGES, props.totalPages)
   let start = Math.max(1, props.currentPage - Math.floor(VISIBLE_PAGES / 2))

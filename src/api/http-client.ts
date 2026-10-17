@@ -1,5 +1,3 @@
-// Єдине місце, яке знає про fetch, базову адресу API та токени.
-// Сервіси викликають лише http(), без жодних URL-адрес сервера
 
 const BASE_URL = import.meta.env.VITE_API_URL
 

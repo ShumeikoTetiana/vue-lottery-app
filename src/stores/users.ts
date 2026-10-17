@@ -10,24 +10,18 @@ export const USERS_PAGE_SIZE = 10
 export const MAX_WINNERS = 3
 
 export const useUsersStore = defineStore('users', () => {
-  // ---------- Поточна сторінка з сервера ----------
   const pageUsers = ref<User[]>([])
   const total = ref(0)
   const currentQuery = ref<UsersListQuery | null>(null)
   const isLoading = ref(false)
   const error = ref<string | null>(null)
-  // Останній стан списку (сторінка, пошук), щоб кнопка "Назад" повертала саме туди
   const lastListQuery = ref<LocationQuery>({})
   let latestRequestId = 0
 
-  // ---------- Локальні зміни ----------
-  // DummyJSON лише імітує POST, PUT і DELETE: сервер відповідає успіхом,
-  // але дані в нього не змінюються. Тому зміни зберігаємо тут
-  // і накладаємо їх на кожну відповідь сервера
+
   const createdUsers = ref<User[]>([])
   const updatedUsers = ref<Record<number, User>>({})
   const deletedIds = ref<number[]>([])
-  // Користувачі, завантажені окремо через GET /users/:id
   const loadedUsers = ref<Record<number, User>>({})
   let nextLocalId = 0
 
@@ -47,8 +41,6 @@ export const useUsersStore = defineStore('users', () => {
     return createdUsers.value.some((user) => user.id === id)
   }
 
-  // Список, який бачить користувач: відповідь сервера з урахуванням локальних змін.
-  // Нові користувачі показуються на початку першої сторінки
   const users = computed<User[]>(() => {
     const fromServer = pageUsers.value
       .filter((user) => !deletedIds.value.includes(user.id))
@@ -65,8 +57,6 @@ export const useUsersStore = defineStore('users', () => {
   const totalPages = computed(() => Math.max(1, Math.ceil(total.value / USERS_PAGE_SIZE)))
 
   async function loadUsers(query: UsersListQuery): Promise<void> {
-    // Якщо користувач швидко гортає сторінки, відповіді можуть прийти не по черзі.
-    // Зберігаємо лише відповідь на останній запит
     const requestId = ++latestRequestId
     isLoading.value = true
     error.value = null
@@ -103,7 +93,6 @@ export const useUsersStore = defineStore('users', () => {
     }
   }
 
-  // Шукає користувача серед уже відомих (без запиту до сервера)
   function findUser(id: number): User | null {
     if (deletedIds.value.includes(id)) {
       return null
@@ -132,7 +121,6 @@ export const useUsersStore = defineStore('users', () => {
 
   async function createUser(data: CreateUserDto): Promise<User> {
     const response = await ServiceProvider.users.create(data)
-    // DummyJSON завжди повертає однаковий id (209), тому робимо його унікальним
     const id = Math.max(Number(response.id), nextLocalId)
     nextLocalId = id + 1
     const user: User = { ...data, ...response, id }
@@ -142,8 +130,6 @@ export const useUsersStore = defineStore('users', () => {
 
   async function updateUser(id: number, data: UpdateUserDto): Promise<User> {
     const current = await fetchUser(id)
-    // Користувача, створеного локально, на сервері не існує (PUT поверне 404),
-    // тому його змінюємо лише в локальному стані
     const response = isLocalUser(id) ? {} : await ServiceProvider.users.update(id, data)
     const updated: User = { ...current, ...response, ...data, id }
 
@@ -167,10 +153,8 @@ export const useUsersStore = defineStore('users', () => {
     removeWinner(id)
   }
 
-  // ---------- Лотерея ----------
   const winners = ref<User[]>([])
 
-  // Кандидати: користувачі поточної сторінки, які ще не перемагали
   const candidates = computed(() =>
     users.value.filter((user) => !winners.value.some((winner) => winner.id === user.id)),
   )

@@ -1,7 +1,5 @@
 import { z } from 'zod'
 
-// Схеми zod описують правила для форм. VeeValidate перевіряє поля за ними
-
 export const loginSchema = z.object({
   username: z.string().trim().min(1, 'Вкажіть ім’я користувача'),
   password: z
@@ -12,7 +10,6 @@ export const loginSchema = z.object({
 
 export type LoginFormValues = z.infer<typeof loginSchema>
 
-// Одна схема для створення й редагування: при редагуванні пароль можна залишити порожнім
 export function createUserFormSchema(options: { passwordRequired: boolean }) {
   return z.object({
     firstName: z.string().trim().min(1, 'Вкажіть ім’я'),
@@ -28,7 +25,6 @@ export function createUserFormSchema(options: { passwordRequired: boolean }) {
         (value) => (options.passwordRequired ? value.length >= 6 : value === '' || value.length >= 6),
         'Пароль має містити щонайменше 6 символів',
       ),
-    // coerce перетворює текст із поля вводу на число
     age: z.coerce
       .number({ invalid_type_error: 'Вкажіть вік числом' })
       .int('Вік має бути цілим числом')

@@ -14,7 +14,6 @@ const props = withDefaults(
   },
 )
 
-// Якщо фото немає (у щойно створених користувачів), показуємо ініціали
 const initials = computed(
   () => `${props.firstName.charAt(0)}${props.lastName.charAt(0)}`.toUpperCase(),
 )

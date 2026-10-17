@@ -5,7 +5,6 @@ const DEBOUNCE_MS = 300
 
 const props = withDefaults(
   defineProps<{
-    // Початковий текст (наприклад, з параметра ?q= в адресі)
     initialQuery?: string
   }>(),
   {
@@ -19,7 +18,6 @@ const emit = defineEmits<{
 
 const query = ref(props.initialQuery)
 
-// Якщо адреса змінилась ззовні (кнопка "Назад" у браузері), оновлюємо поле
 watch(
   () => props.initialQuery,
   (newQuery) => {
@@ -27,8 +25,6 @@ watch(
   },
 )
 
-// Подію надсилаємо не на кожну літеру, а через 300 мс після останньої зміни.
-// onCleanup скасовує попередній таймер, якщо користувач ще друкує
 watch(query, (newQuery, _oldQuery, onCleanup) => {
   const timerId = setTimeout(() => {
     emit('filter-by-name', newQuery.trim())

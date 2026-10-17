@@ -7,7 +7,6 @@ withDefaults(
     variant?: ButtonVariant
     disabled?: boolean
     small?: boolean
-    // Показує спінер і блокує кнопку, поки триває запит
     loading?: boolean
   }>(),
   {

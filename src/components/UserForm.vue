@@ -14,7 +14,6 @@ const props = withDefaults(
     submitLabel: string
     initialValues?: Partial<UserFormValues>
     isSubmitting?: boolean
-    // Помилка від сервера показується над кнопками
     serverError?: string | null
   }>(),
   {
@@ -48,15 +47,13 @@ const { handleSubmit } = useForm({
   },
 })
 
-// handleSubmit перевіряє всю форму і викликає функцію лише для правильних даних.
-// Невалідні поля при цьому позначаються як touched, тому помилки стають видимими
+
 const onSubmit = handleSubmit((values) => {
   emit('submit', values)
 })
 </script>
 
 <template>
-  <!-- novalidate вимикає вбудовані підказки браузера, бо помилки показує VeeValidate -->
   <form novalidate @submit.prevent="onSubmit">
     <div class="row">
       <div class="col-md-6">

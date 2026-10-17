@@ -9,7 +9,6 @@ import UserDeleteModal from '@/components/UserDeleteModal.vue'
 import { useUsersStore } from '@/stores/users'
 import { getErrorMessage } from '@/utils/errors'
 
-// id приходить як проп завдяки props: true у маршруті
 const props = defineProps<{
   id: string
 }>()
@@ -20,7 +19,6 @@ const usersStore = useUsersStore()
 
 const userId = computed(() => Number(props.id))
 
-// Береться зі сторі, тому після редагування сторінка оновлюється сама
 const user = computed(() => usersStore.findUser(userId.value))
 
 const isLoading = ref(false)
@@ -38,7 +36,6 @@ async function loadUser(): Promise<void> {
   }
 }
 
-// Завантажуємо при відкритті і при переході на іншого користувача (/users/1 → /users/2)
 watch(userId, loadUser, { immediate: true })
 
 const isEditing = computed(() => route.name === 'user-edit')
@@ -133,7 +130,6 @@ async function handleDeleted(): Promise<void> {
       </div>
     </section>
 
-    <!-- Вкладений маршрут /users/:id/edit показує форму редагування тут -->
     <RouterView />
   </template>
 

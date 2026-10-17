@@ -5,7 +5,6 @@ import { RouterLink } from 'vue-router'
 <template>
   <RouterLink class="app-logo" :to="{ name: 'home' }" aria-label="Lottery, на головну">
     <svg class="app-logo__icon" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">
-      <!-- Лотерейний квиток із вирізами по боках -->
       <path
         d="M4 9a2 2 0 0 1 2-2h20a2 2 0 0 1 2 2v4a3 3 0 0 0 0 6v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4a3 3 0 0 0 0-6z"
         fill="currentColor"

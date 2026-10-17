@@ -8,7 +8,6 @@ const props = withDefaults(
     type?: 'text' | 'email' | 'tel' | 'date' | 'password' | 'number'
     placeholder?: string
     error?: string
-    // touched: користувач уже працював з полем, тому можна показувати результат перевірки
     touched?: boolean
     autocomplete?: string
   }>(),
