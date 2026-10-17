@@ -28,11 +28,9 @@ export function setAuthHooks(hooks: AuthHooks): void {
 }
 
 export interface HttpOptions extends RequestInit {
-  // true для запитів login і refresh: при 401 на них не треба оновлювати токен
   skipAuthRefresh?: boolean
 }
 
-// Якщо кілька запитів одночасно отримали 401, токен оновлюється лише один раз
 let refreshInProgress: Promise<boolean> | null = null
 
 function refreshTokenOnce(): Promise<boolean> {
@@ -67,7 +65,6 @@ async function readErrorMessage(response: Response): Promise<string> {
       }
     }
   } catch {
-    // Тіло відповіді не JSON: використаємо стандартний текст нижче
   }
   return `HTTP ${response.status}: ${response.statusText}`
 }
@@ -77,8 +74,7 @@ export async function http<T>(path: string, options: HttpOptions = {}): Promise<
 
   let response = await send(path, init)
 
-  // Interceptor: сервер відповів 401, тобто accessToken прострочений.
-  // Пробуємо оновити його через refreshToken і повторюємо запит один раз
+
   if (response.status === 401 && !skipAuthRefresh && authHooks?.getAccessToken()) {
     const refreshed = await refreshTokenOnce()
     if (refreshed) {

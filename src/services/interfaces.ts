@@ -1,5 +1,3 @@
-// Узагальнені контракти репозиторію.
-// Кожен інтерфейс описує одну можливість, тому сервіс реалізує лише ті, що йому потрібні
 
 export type SortOrder = 'asc' | 'desc'
 
@@ -10,7 +8,6 @@ export interface ListParams {
   order?: SortOrder
 }
 
-// Сторінка списку разом із загальною кількістю записів (потрібна для пагінації)
 export interface PaginatedResult<T> {
   items: T[]
   total: number

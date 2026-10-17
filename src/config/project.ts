@@ -1,14 +1,13 @@
-// TODO: замініть заглушки на свої дані (ПІБ, логін GitHub, навички)
 
 export const AUTHOR = {
-  fullName: 'Прізвище Ім’я По батькові',
+  fullName: 'Шумейко Тетяна Сергіївна',
   role: 'Студентка кафедри комп’ютерних наук ЧНУ',
-  githubUsername: 'your-github',
+  githubUsername: 'ShumeikoTetiana',
 }
 
-export const GITHUB_PROFILE_URL = `https://github.com/${AUTHOR.githubUsername}`
+export const GITHUB_PROFILE_URL = `https://github.com/ShumeikoTetiana`
 
-export const REPOSITORY_URL = `${GITHUB_PROFILE_URL}/vue-lottery-app`
+export const REPOSITORY_URL = `https://github.com/ShumeikoTetiana/vue-lottery-app`
 
 export const TECHNICAL_SKILLS = [
   'HTML',
